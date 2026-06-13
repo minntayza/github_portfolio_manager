@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "DevStats",
+    "subtitle": "GitHub Portfolio Visualizer"
+  },
+  "search": {
+    "placeholder": "Enter GitHub username...",
+    "button": "Analyze",
+    "analyzing": "Analyzing..."
+  },
+  "profile": {
+    "repos": "Repos",
+    "followers": "Followers",
+    "following": "Following",
+    "totalStars": "Total Stars",
+    "noBio": "No bio provided",
+    "joined": "Joined"
+  },
+  "languages": {
+    "title": "Language Breakdown",
+    "noData": "No language data available"
+  },
+  "repos": {
+    "title": "Top Repos",
+    "stars": "stars",
+    "forks": "forks",
+    "noData": "No repositories found",
+    "updated": "Updated"
+  },
+  "commits": {
+    "title": "Commit Activity",
+    "last30d": "Last 30 Days",
+    "last6mo": "Last 6 Months",
+    "commits": "commits",
+    "noData": "No commit data available"
+  },
+  "aiSummary": {
+    "title": "AI Summary",
+    "providerLabel": "Provider",
+    "apiKeyPlaceholder": "Enter your API key",
+    "saveKey": "Save Key",
+    "keySaved": "✓ Key saved",
+    "generate": "Generate Summary",
+    "generating": "Generating...",
+    "noKey": "Enter your API key above to generate an AI-powered summary of this developer's profile.",
+    "error": "Failed to generate summary. Check your API key and try again.",
+    "selectProvider": "Select provider"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "toggle": "Language",
+    "en": "English",
+    "my": "မြန်မာ"
+  },
+  "errors": {
+    "notFound": "User not found. Please check the username and try again.",
+    "rateLimited": "GitHub API rate limit exceeded. Please try again later.",
+    "networkError": "Network error. Please check your connection and try again.",
+    "generic": "Something went wrong. Please try again.",
+    "retry": "Retry"
+  },
+  "empty": {
+    "noRepos": "This user has no public repositories yet.",
+    "noCommits": "No commit activity found in this period."
+  }
+}

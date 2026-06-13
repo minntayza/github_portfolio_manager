@@ -9,23 +9,21 @@ One-page web app. Type any GitHub username → get a rich visual portfolio analy
 - shadcn/ui — component library (buttons, cards, inputs, skeletons)
 - Recharts — pie charts + bar charts
 - GitHub MCP + REST API — data source
+- Pyidaungsu font — Burmese text rendering
 
 ## 💬 Bilingual Support (Burmese + English)
-All UI text is bilingual — Burmese + English. Implementation approaches (pick one):
-1. **i18n JSON files** — `locales/en.json` + `locales/my.json` with a language toggle 🇲🇲/🇺🇸
-2. **Inline bilingual text** — Display both languages together (e.g., "Search · ရှာဖွေပါ") for a simpler dev experience
-3. **Default English, toggle to Burmese** — Language switcher button in the header
-
-**Recommendation:** Option 1 (i18n with language toggle) — cleanest UX and easiest to maintain.
-
-Labels, placeholders, error messages, and AI summary section headers all use i18n keys.
-Language preference saved in `localStorage`.
+- Language toggle button in header: **🇲🇲 / 🇺🇸**
+- i18n JSON files: `locales/en.json` + `locales/my.json`
+- Preference saved in `localStorage`
+- Burmese font: **Pyidaungsu** (loaded via Google Fonts or self-hosted)
+- Labels, placeholders, error messages, and AI summary section headers all use i18n keys
+- Data values (usernames, repo names, numbers) stay in their original language
 
 ## Layout
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│            🔍 [Enter username]  [Analyze]                │
+│   🇲🇲/🇺🇸    🔍 [Enter username]  [Analyze]              │
 ├──────────────────────────────────────────────────────────┤
 │  ┌──────┬──────────────────────────────────────────────┐ │
 │  │Avatar│  @username  ·  Name                          │ │
@@ -35,50 +33,69 @@ Language preference saved in `localStorage`.
 │  └──────┴──────────────────────────────────────────────┘ │
 │                                                          │
 │  ┌─────────────────────┐  ┌──────────────────────────┐  │
-│  │   Language Breakdown │  │   Top Repos by Stars     │  │
+│  │   Language Breakdown │  │   Top 5 Repos            │  │
 │  │   ┌─────────────┐   │  │   ┌──────────────────┐   │  │
-│  │   │   Pie Chart  │   │  │   │ Repo card 1      │   │  │
+│  │   │   Pie Chart  │   │  │   │ 1. repo-name     │   │  │
 │  │   │             │   │  │   │ ⭐ 142  🍴 34     │   │  │
 │  │   │             │   │  │   ├──────────────────┤   │  │
-│  │   │             │   │  │   │ Repo card 2      │   │  │
+│  │   │             │   │  │   │ 2. repo-name     │   │  │
 │  │   └─────────────┘   │  │   │ ⭐ 89   🍴 12     │   │  │
 │  │   Legend below       │  │   ├──────────────────┤   │  │
-│  └─────────────────────┘  │   │ Repo card 3      │   │  │
+│  └─────────────────────┘  │   │ 3. repo-name     │   │  │
 │                            │   │ ⭐ 45   🍴 8      │   │  │
-│  ┌─────────────────────┐  │   └──────────────────┘   │  │
-│  │   Commit Activity    │  └──────────────────────────┘  │
-│  │   ┌─────────────┐   │                                 │
-│  │   │  Bar Chart   │   │  ┌──────────────────────────┐  │
-│  │   │ (last 12 mo) │   │  │   🔑 AI Summary          │  │
-│  │   │             │   │  │  ┌──────────────────┐    │  │
-│  │   │             │   │  │  │ [Enter API Key]  │    │  │
-│  │   └─────────────┘   │  │  ├──────────────────┤    │  │
-│  │   Monthly commits    │  │  │@username is a     │    │  │
-│  └─────────────────────┘  │  │full-stack dev...  │    │  │
+│  ┌─────────────────────┐  │   ├──────────────────┤   │  │
+│  │   Commit Activity    │  │   │ 4. repo-name     │   │  │
+│  │  [30 days] [6 months] │  │   │ ⭐ 23   🍴 4      │   │  │
+│  │   ┌─────────────┐   │  │   ├──────────────────┤   │  │
+│  │   │  Bar Chart   │   │  │   │ 5. repo-name     │   │  │
+│  │   │             │   │  │   │ ⭐ 12   🍴 2      │   │  │
+│  │   │             │   │  │   └──────────────────┘   │  │
+│  │   └─────────────┘   │  └──────────────────────────┘  │
+│  │   Daily/Monthly      │                                 │
+│  │   commits            │  ┌──────────────────────────┐  │
+│  └─────────────────────┘  │   🔑 AI Summary          │  │
+│                            │  ┌──────────────────┐    │  │
+│                            │  │ [Provider ▼]      │    │  │
+│                            │  │ [Enter API Key]   │    │  │
+│                            │  ├──────────────────┤    │  │
+│                            │  │@username is a     │    │  │
+│                            │  │full-stack dev...  │    │  │
 │                            │  └──────────────────┘    │  │
 └──────────────────────────────────────────────────────────┘
 ```
 
 ## AI Summary — API Key Flow
-- The AI Summary section shows an input field for the user's own API key
-- Supports **OpenAI** or **Anthropic Claude** API keys
-- Key is stored in `localStorage` — never sent to our server
-- Summary is generated client-side by calling the LLM API directly
-- If no key is entered, the section shows a prompt: "Enter your API key to generate an AI summary"
+- User selects **provider**: OpenAI / Claude / Gemini
+- User enters their own API key for the selected provider
+- Key + provider stored in `localStorage` — never sent to our server
+- Summary is generated **client-side** (browser calls the LLM API directly via fetch)
+- If no key is entered, the section shows a prompt to configure one
 - Language of the AI summary follows the selected UI language (English or Burmese)
+
+**API endpoints used (client-side):**
+| Provider | Endpoint |
+|----------|----------|
+| OpenAI | `https://api.openai.com/v1/chat/completions` |
+| Claude | `https://api.anthropic.com/v1/messages` |
+| Gemini | `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent` |
 
 ## Pages
 - **`/`** — Search bar (hero section), then results below
-- **`/api/analyze?username={user}`** — Full analysis endpoint
+
+## API Route
+- **`/api/analyze?username={user}&range={30d|6mo}`** — Full analysis endpoint
 
 ## Data Flow
 1. User types username → clicks "Analyze"
-2. Frontend calls `/api/analyze?username={user}`
-3. API route fetches:
-   - Profile (avatar, bio, followers, etc.) — GitHub MCP or REST
-   - Repos list with languages, stars, forks — GitHub MCP or REST
-   - Commit activity per repo (last 12 months) — REST
-4. Backend processes and returns structured JSON
+2. Frontend calls `/api/analyze?username={user}&range=30d`
+3. API route fetches (server-side, via GitHub MCP or REST):
+   - Profile (avatar, bio, followers, etc.)
+   - Repos list with languages, stars, forks (all repos)
+   - Commit activity per repo for the selected range
+4. Backend processes and returns structured JSON:
+   - Top 5 repos sorted by stars
+   - Language aggregate across all repos
+   - Commit data points (daily for 30d, monthly for 6mo)
 5. Frontend renders charts + cards
 6. If user has entered an API key, AI summary is fetched client-side
 
@@ -92,3 +109,8 @@ Language preference saved in `localStorage`.
 ## Responsive
 - Desktop: 2-column layout (charts side by side)
 - Mobile: Single column stack, scrollable
+
+## Font
+- **Pyidaungsu** for Burmese text — loaded via Google Fonts or bundled
+- Fallback: system sans-serif for English
+- CSS: `font-family: 'Pyidaungsu', system-ui, sans-serif;`
