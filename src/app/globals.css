@@ -4,9 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Noto Sans Myanmar for Burmese text (closest free alternative to Pyidaungsu) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap');
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
